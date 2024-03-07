@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+
+<body>
+    <header style="height:40px; background-color: aquamarine;"></header>
+    <aside style="background-color:violet; position: fixed">a</aside>
+    <main style="background-color:indianred; display:flex; justify-content: center;">
+        <section style="height:4000vh; width: 1000px; background-color:lightsteelblue;">
+
+        </section>
+
+
+    </main>
+
+    <script>
+        const fullWidth = () => window.innerWidth;
+        const elementLeft = (element) => element.getBoundingClientRect().left;
+        const elementRight = (element) => element.getBoundingClientRect().right;
+        
+        const header = document.getElementsByTagName('header')[0];
+        const section = document.getElementsByTagName('section')[0];
+        
+        const aside = document.getElementsByTagName('aside')[0];
+        aside.style.left = '0px';
+        aside.style.bottom = '0px';
+        const box = section.getBoundingClientRect();
+        console.log(box)
+        const sectionLeft = elementLeft(section);
+        console.log({sectionLeft})
+        aside.style.width = `${sectionLeft}px`;
+
+        const arrayRange = (start, stop, step) =>
+            Array.from(
+                { length: (stop - start) / step + 1 },
+                (value, index) => start + index * step
+            );
+        const range = arrayRange(0.001, 0.999, 0.001);
+        const viewPortObserverOptions = {
+            root: null,
+            rootMargin: "0px",
+            threshold: range,
+        };
+        const moveTop = (entries, observer) => {
+            entries.forEach((entry) => {
+                const rect = entry.target.getBoundingClientRect();
+                const bottom = rect.bottom;
+                aside.style.top = `${bottom > 0 ? bottom : 0}px`;
+            });
+        };
+        let viewPortObserver = new IntersectionObserver(moveTop, viewPortObserverOptions);
+        viewPortObserver.observe(header);
+
+    </script>
+</body>
+
+</html>
